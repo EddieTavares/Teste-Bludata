@@ -1,0 +1,78 @@
+﻿@model TesteCSharp_Ednilson.Models.Empresa
+
+<style type="text/css">
+    .spanerr {
+        color: #e83645;
+        font-size: 10px;
+        float: left;
+        font-weight: bold;
+        display: none;
+    }
+</style>
+
+<h2>Dados da empresa</h2>
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cnpj, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (ViewBag.create == true)
+            {
+                @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control cnpj" } });
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control cnpj", @Input = "Disabled", @readonly = "readonly" } });
+            }
+            <span id="spncnpjerr" class="spanerr"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UF, "UF", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("UF", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UF, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NomeFantasia, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control" } })
+            <span id="spnnomeerr" class="spanerr"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Salvar" onclick="SalvaEditEmpresa(); return false;" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="msgSucesso" class="alert alert-success" style="display:none">
+        <strong>Successo!</strong> Os dados da empresa foram salvos.
+    </div>
+    <div id="msgErro" class="alert alert-danger" style="display:none">
+        <strong>Erro!</strong> Não foi possível salvar os dados da empresa.
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Voltar", "Index", "Home")
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryajax")
+
+    <script src="~/Scripts/App/EditEmpresa.js"></script>
+
+}

@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Teste Bludata</h1>
+    <p class="lead">Aplicativo teste por Ednilson C. Tavares para a Bludata</p>
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <h2>Dados da empresa</h2>
+        <p>
+            <a class="btn btn-default" href="~/empresa/Edit">Empresa &raquo;</a>
+        </p>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Cadastro de fornecedores</h2>
+        <p>
+        </p>
+        <p>
+
+            @if (ViewBag.EmpresaCnpj != string.Empty)
+            {
+                <a class="btn btn-default ntooltip" title="Cadastro de fornecedores." href="~/Fornecedor/Index">Fornecedores &raquo;</a>
+            }
+            else
+            {
+                <a class="btn btn-default ntooltip" disabled title="Antes cadastre os dados da empresa.">Fornecedores &raquo;</a>
+            }
+        </p>
+    </div>
+
+</div>

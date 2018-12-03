@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TesteCSharp_Ednilson.Models.Fornecedor>
+
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cpf_Cnpj)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo_Pessoa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataCadastro)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cpf_Cnpj)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+            @if (item.Tipo_Pessoa == "F")
+            {
+                <td>Física</td>
+            }
+            else
+            {
+                <td>Jurídica</td>
+            }
+        <td>
+            @Html.DisplayFor(modelItem => item.DataCadastro)
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-info ntooltip" title = "Editar fornecedor" onclick="CarregaPartialEdit('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+        
+            <button type="button" class="btn btn-sm btn-warning ntooltip" title = "Detalhes fornecedor" onclick="CarregaPartialDetalhes('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
+        
+            <button type="button" class="btn btn-sm btn-danger ntooltip" title = "Exclui fornecedor" onclick="CarregaPartialDelete('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </td>
+        </tr>
+    }
+
+</table>
