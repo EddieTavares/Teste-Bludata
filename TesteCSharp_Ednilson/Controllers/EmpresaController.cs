@@ -43,6 +43,9 @@ namespace TesteCSharp_Ednilson.Controllers
 
                     if (_empresa == null)
                     {
+                        if (!Utils.IsCnpj(empresa.Cnpj))
+                            return Json(new { Rc = 9, Message = "Cpf inválido" });
+
                         db.Empresa.Add(empresa);
                         db.SaveChanges();
                     }
