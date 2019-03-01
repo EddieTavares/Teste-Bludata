@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\TesteCSharp_Ednilson"
+    "\\TesteCSharp_Ednilson",
+    "\\TesteCSharp_Ednilson\\Views\\Fornecedor"
   ],
-  "SelectedNode": "\\packages",
+  "SelectedNode": "\\TesteCSharp_Ednilson\\bin",
   "PreviewInSolutionExplorer": false
 }
