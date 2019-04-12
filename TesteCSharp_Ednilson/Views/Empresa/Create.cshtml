@@ -1,0 +1,68 @@
+﻿@model TesteCSharp_Ednilson.Models.EmpresaViewModel
+
+@{
+    Layout = null;
+    ViewBag.Title = "Edit";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Ajax.BeginForm("Create", "Empresa",
+            new AjaxOptions
+            {
+                UpdateTargetId = "modal",
+                Url = Url.Action("Create", "Empresa"),
+                OnComplete = "RecarregaGrade"
+            }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Atualizar Empresa</h4>
+            </div>
+
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cnpj, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control cnpj" } })
+                            @Html.ValidationMessageFor(model => model.Cnpj, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NomeFantasia, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NomeFantasia, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UF, "UF", htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @*
+                                @Html.DropDownList("UF", null, htmlAttributes: new { @class = "form-control" })
+                            *@
+                            @Html.DropDownListFor(model => model.UF, (IEnumerable<SelectListItem>)Model.Estados, "Selecione", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UF, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <input type="button" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+            </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+<script>
+    $(document).ready(function () {
+        $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+    });
+</script>

@@ -91,7 +91,7 @@ function CarregaPartialCreate() {
 
             $('#btnAddFone').click(function () {
                 if ($("input[name=Telefone]").val() != '') {
-                    $('#todo').append("<ul><div name='ulFone' style='float: left;'>" + $("input[name=Telefone]").val() + "</div> <a href='#' class='close ntooltip' title = 'Excluir telefone da lista.' aria-hidden='true'>&nbsp;&times;&nbsp;</a></ul>");
+                    $('#todo').append("<li><div name='ulFone' style='float: left;'>" + $("input[name=Telefone]").val() + "</div> <a href='#' class='close ntooltip' title = 'Excluir telefone da lista.' aria-hidden='true'>&nbsp;&times;&nbsp;</a></li>");
                     $('#Telefone').val('');
                 }
             });

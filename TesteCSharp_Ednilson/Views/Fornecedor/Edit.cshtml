@@ -1,0 +1,136 @@
+﻿@model TesteCSharp_Ednilson.Models.FornecedorViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Ajax.BeginForm("EditConfirmed", "Fornecedor",
+            new AjaxOptions
+            {
+                HttpMethod = "Post",
+                UpdateTargetId = "modal",
+                OnComplete = "RecarregaGradeFornecedor"
+            }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Atualizar dados do fornecedor</h4>
+            </div>
+
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Empresa_Cnpj)
+                    @Html.HiddenFor(model => model.Tipo_Pessoa)
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NomeFantasia, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Empresa consumidora", @Input = "Disabled", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.NomeFantasia, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tipo_Pessoa, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: end;" })
+                        <div class="col-md-8">
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "F", new { disabled = "disabled" }) Física <br>
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "J", new { disabled = "disabled" }) Jurídica
+                            @Html.ValidationMessageFor(model => model.Tipo_Pessoa, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cpf_Cnpj, "Cpf/Cnpj", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+
+                            @if (Model.Tipo_Pessoa == "F")
+                            {
+                                @Html.EditorFor(model => model.Cpf_Cnpj, new { htmlAttributes = new { @class = "form-control cpf ntooltip", title = "Informe o Cnpj do fornecedor.", @Input = "Disabled", @readonly = "readonly" } });
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Cpf_Cnpj, new { htmlAttributes = new { @class = "form-control cnpj ntooltip", title = "Informe o Cnpj do fornecedor.", @Input = "Disabled", @readonly = "readonly" } });
+                            }
+                            @Html.ValidationMessageFor(model => model.Cpf_Cnpj, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe o nome do fornecedor." } })
+                            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @if (Model.Tipo_Pessoa == "F")
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Rg, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Rg, new { htmlAttributes = new { @class = "form-control ntooltip rg", title = "Informe o Rg do fornecedor." } })
+                                @Html.ValidationMessageFor(model => model.Rg, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe data de nascimento do fornecedor.", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Telefones</label>
+                        <div class="col-md-8" style="display: flex;">
+                            <input class="form-control text-box single-line phone ntooltip" title="Informe um telefone." data-val="true" data-val-length-max="20" id="Telefone" name="Telefone" type="text" />
+                            @Html.ValidationMessageFor(model => model.Telefones, "", new { @class = "text-danger" })
+                            <button type="button" class="btn btn-info btn-circle ntooltip" title="Adicionar telefone à lista." style="margin-left: 5px;" id="btnAddFone"><i class="glyphicon glyphicon-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <ul id="todo" style="list-style-type:none;">
+                                @Html.HiddenFor(model => model.Telefones.Count)
+
+                                @for (int i = 0; i < Model.Telefones.Count(); i++)
+                                {
+                                    <li>
+                                        @Model.Telefones[i]
+                                        @Html.HiddenFor(model => model.Telefones[i], new { @class = "telefone" })
+                                        <a href="#" class="close ntooltip" title="Excluir telefone da lista." aria-hidden="true"> × </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <input type="button" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.cpf').mask('000.000.000-00', { reverse: true });
+        $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+        $('.phone').mask('(00) 00009-0000');
+        $('.rg').mask('000.000.000-0');
+    });
+</script>

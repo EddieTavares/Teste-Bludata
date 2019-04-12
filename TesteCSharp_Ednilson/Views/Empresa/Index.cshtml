@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TesteCSharp_Ednilson.Models.Empresa>
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+}
+
+<h2>Cadastros de empresas</h2>
+
+<p>
+    <button type="button" class="btn btn-info ntooltip create" title="Cadastra novo fornecedor" style="margin-left: 8px;">
+        <span class="glyphicon glyphicon-plus"></span>
+        Cadastrar
+    </button>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NomeFantasia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cnpj)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UF)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeFantasia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cnpj).ToString().Insert(2, ".").Insert(6, ".").Insert(10, "/").Insert(15, "-")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UF)
+            </td>
+            <td>
+                <div style="float: right;">
+                    <button class="btn btn-primary btn-mini ntooltip edit" title="Editar" data-id="@item.Cnpj" type="button">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+
+                    <button class="btn btn-warning btn-mini ntooltip details" title="Detalhes" data-id="@item.Cnpj" type="button" style="margin-right: 2px; margin-left: 2px;">
+                        <i class="glyphicon glyphicon-file"></i>
+                    </button>
+
+                    <button class="btn btn-danger btn-mini ntooltip delete" title="Excluir" data-id="@item.Cnpj" type="button">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="modal" id="modal">
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryajax")
+    <script src="~/Scripts/App/Empresa.js"></script>
+}

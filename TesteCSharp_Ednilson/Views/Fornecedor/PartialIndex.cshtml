@@ -23,13 +23,13 @@
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cpf_Cnpj)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cpf_Cnpj)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
             @if (item.Tipo_Pessoa == "F")
             {
                 <td>Física</td>
@@ -38,23 +38,30 @@
             {
                 <td>Jurídica</td>
             }
-        <td>
-            @Html.DisplayFor(modelItem => item.DataCadastro)
-        </td>
-        <td>
-            <button type="button" class="btn btn-sm btn-info ntooltip" title = "Editar fornecedor" onclick="CarregaPartialEdit('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-        
-            <button type="button" class="btn btn-sm btn-warning ntooltip" title = "Detalhes fornecedor" onclick="CarregaPartialDetalhes('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
-                <span class="glyphicon glyphicon-eye-open"></span>
-            </button>
-        
-            <button type="button" class="btn btn-sm btn-danger ntooltip" title = "Exclui fornecedor" onclick="CarregaPartialDelete('@item.Empresa_Cnpj', '@item.Cpf_Cnpj'); return false;">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCadastro)
+            </td>
+            <td>
+                <button class="btn btn-sm btn-info ntooltip edit" title="Editar dados fornecedor" data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </button>
+
+                <button class="btn btn-sm btn-warning ntooltip details" title="Detalhes fornecedor" data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </button>
+
+                <button class="btn btn-sm btn-danger ntooltip delete" title="Exclui fornecedor"  data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </td>
         </tr>
     }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryajax")
+
+    <script src="~/Scripts/App/Fornecedor.js"></script>
+}

@@ -22,11 +22,13 @@ namespace TesteCSharp_Ednilson.Models
                 .Where(x => x.PropertyType.FullName.Equals("System.String") &&
                 !x.GetCustomAttributes(false).OfType<ColumnAttribute>().Where(q => q.TypeName != null && q.TypeName.Equals("varchar", StringComparison.InvariantCultureIgnoreCase)).Any())
                 .Configure(c => c.HasColumnType("varchar").HasMaxLength(100));
+
+            modelBuilder.Properties<DateTime>()
+            .Configure(c => c.HasColumnType("datetime2"));
         }
 
         public DbSet<Empresa> Empresa { get; set; }
         public DbSet<Fornecedor> Fornecedor { get; set; }
         public DbSet<Telefone> Telefone { get; set; }
-
     }
 }

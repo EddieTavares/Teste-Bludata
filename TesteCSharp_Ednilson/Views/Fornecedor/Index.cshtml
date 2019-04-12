@@ -4,36 +4,34 @@
 
 <h2>Fornecedores</h2>
 
-
-
 @Html.Hidden("EmpresaCnpj", (string)ViewBag.EmpresaCnpj)
 
 <div class="form-horizontal" style="background-color: aliceblue;">
     <fieldset style="margin-bottom: 30px;">
-        <div class="row" style="margin-left: 20px; margin-top: 20px;">
+        <div class="row margem-lrtp-20">
 
 
-            <div class="col-sm-2" style="margin-left: 10px; margin-right: 10px; ">
+            <div class="col-sm-2 margem-lr-10">
                 <div class="form-group">
                     Nome
                     @Html.TextBox("txtFiltroNome", null, htmlAttributes: new { @class = "form-control ntooltip", title = "Informe o nome ou parte do nome." })
                 </div>
             </div>
 
-            <div class="col-sm-2" style="margin-left: 10px; margin-right: 10px; ">
+            <div class="col-sm-2 margem-lr-10">
                 <div class="form-group">
                     Cpf/Cnpj
                     @Html.TextBox("txtFiltroCpfCnpj", null, htmlAttributes: new { @class = "form-control ntooltip", title = "Informe o Cnpj ou parte do Cnpj." })
                 </div>
             </div>
 
-            <div class="col-sm-2" style="margin-left: 10px; margin-right: 10px; ">
+            <div class="col-sm-2 margem-lr-10">
                 <div class="form-group">
                     Data inicial
                     @Html.TextBox("dtpFiltroDataInicial", null, htmlAttributes: new { @class = "form-control ntooltip", title = "Informe o período inicial.", type = "date" })
                 </div>
             </div>
-            <div class="col-sm-2" style="margin-left: 10px; margin-right: 10px; ">
+            <div class="col-sm-2 margem-lr-10">
                 <div class="form-group">
                     Data final
                     @Html.TextBox("dtpFiltroDataFinal", null, htmlAttributes: new { @class = "form-control ntooltip", title = "Informe o período final.", type = "date" })
@@ -42,7 +40,7 @@
 
             <div class="col-sm-1">
                 <br />
-                <button type="button" class="btn btn-primary ntooltip" title = "Pesquisar" onclick="CarregaPartialIndex(); return true;">
+                <button type="button" class="btn btn-primary ntooltip" title="Pesquisar" onclick="CarregaPartialIndex(); return true;">
                     <span class="glyphicon glyphicon-search"</span> Pesquisar
                 </button>
                 &nbsp;
@@ -51,22 +49,13 @@
             <div class="col-sm-1">
                 <br />
                 <div class="container">
-                    <button type="button" class="btn btn-info ntooltip" title = "Cadastra novo fornecedor" id="btnShowModal" style="margin-left: 8px;">
+                    <button type="button" class="btn btn-info ntooltip create" title="Cadastra novo fornecedor" style="margin-left: 8px;">
                         <span class="glyphicon glyphicon-plus"></span> Cadastrar
                     </button>
                     <br />
                     <br />
-                    <!-- Modal -->
-                    <div class="modal fade" id="mdlFornecedor" role="dialog">
-                        <div class="modal-dialog">
-                            <div id="divPartialCreate">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row" style="margin-left: 20px; margin-bottom: 20px;">
         </div>
     </fieldset>
 
@@ -74,9 +63,13 @@
 <div id="divIndexFornecedor">
 </div>
 
+<!-- Modal -->
+<div class="modal" id="modal">
+</div>
+
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryajax")
-    <script src="~/Scripts/App/IndexFornecedor.js"></script>
+    <script src="~/Scripts/App/Fornecedor.js"></script>
 }
 

@@ -1,0 +1,74 @@
+﻿@model TesteCSharp_Ednilson.Models.Empresa
+
+@{
+    Layout = null;
+    ViewBag.Title = "Delete";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Excluir Empresa</h4>
+        </div>
+
+        <div class="modal-body">
+
+            <h3>Tem certeza que quer excluir esta Empresa?</h3>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.NomeFantasia)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.NomeFantasia)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.UF)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UF)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Cnpj)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Cnpj).ToString().Insert(2, ".").Insert(6, ".").Insert(10, "/").Insert(15, "-")
+                </dd>
+            </dl>
+        </div>
+
+        @using (Ajax.BeginForm("Delete", "Empresa",
+            new AjaxOptions
+            {
+                UpdateTargetId = "modal",
+                Url = Url.Action("Delete", "Empresa"),
+                OnComplete = "RecarregaGrade"
+            }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Cnpj)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="modal-footer">
+                <input type="submit" value="Excluir" class="btn btn-primary" />
+                <input type="button" value="Cancelar" class="btn btn-default" data-dismiss="modal" />
+            </div>
+        }
+
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+
+
+
+
+
+
+
+

@@ -6,101 +6,126 @@
 
 @Html.AntiForgeryToken()
 
-<style>
-    #todo {
-        margin: 0 auto;
-        width: 500px;
-    }
+<div class="modal-dialog">
+    <div class="modal-content">
 
-    a.close {
-        float: initial;
-    }
-</style>
-
-<div class="modal-content">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Cadastrar novo fornecedor</h4>
-    </div>
-    <div class="modal-body">
-
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.Tipo_Pessoa, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: end;" })
-                <div class="col-md-8">
-                    <input type="radio" name="rdtipo" id="rdtipoF" value="F" onchange="show()"> Física<br>
-                    <input type="radio" name="rdtipo" id="rdtipoJ" checked="checked" value="J" onchange="hide()"> Jurídica<br>
-                </div>
+        @using (Ajax.BeginForm("Create", "Empresa",
+            new AjaxOptions
+            {
+                UpdateTargetId = "modal",
+                Url = Url.Action("Edit", "Empresa"),
+                OnComplete = "RecarregaGrade"
+            }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cadastrar novo fornecedor</h4>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Cpf_Cnpj, htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Cpf_Cnpj, new { htmlAttributes = new { @class = "form-control cnpj ntooltip", title = "Informe o Cnpj do fornecedor.", onkeypress = "OnkeyCpfCnpj();" } })
-                    <span id="spncnpjerr" class="spanerr"></span>
-                </div>
-            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe o nome do fornecedor." } })
-                    <span id="spnnomeerr" class="spanerr"></span>
-                </div>
-            </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div id="divfis" style="display:none">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Rg, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.Rg, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe o Rg do fornecedor.", onkeypress = "OnkeyRg();" } })
-                        <span id="spnrgerr" class="spanerr"></span>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tipo_Pessoa, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: end;" })
+                        <div class="col-md-8">
+                            <input type="radio" name="rdtipo" id="rdtipoF" value="F" onchange="show()"> Física<br>
+                            <input type="radio" name="rdtipo" id="rdtipoJ" checked="checked" value="J" onchange="hide()"> Jurídica<br>
+
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "F", false)@Html.Label("Física")<br>
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "J", false)@Html.Label("Jurídica")
+
+
+                            @Html.ValidationMessageFor(model => model.Tipo_Pessoa, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tipo_Pessoa, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: end;" })
+                        <div class="col-md-8">
+
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "F", false) @Html.Label("Física")
+                            <br>
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "J", false) @Html.Label("Jurídica")
+
+
+                            @Html.ValidationMessageFor(model => model.Tipo_Pessoa, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cpf_Cnpj, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Cpf_Cnpj, new { htmlAttributes = new { @class = "form-control cnpj ntooltip", title = "Informe o Cnpj do fornecedor.", onkeypress = "OnkeyCpfCnpj();" } })
+                            <span id="spncnpjerr" class="spanerr"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe o nome do fornecedor." } })
+                            <span id="spnnomeerr" class="spanerr"></span>
+                        </div>
+                    </div>
+
+                    <div id="divfis" style="display:none">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Rg, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Rg, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe o Rg do fornecedor.", onkeypress = "OnkeyRg();" } })
+                                <span id="spnrgerr" class="spanerr"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe data de nascimento do fornecedor.", type = "date" } })
+                                <span id="spndataerr" class="spanerr"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Telefones</label>
+                        <div class="col-md-8" style="display: flex;">
+                            <input class="form-control text-box single-line phone ntooltip" title="Informe um telefone." data-val="true" data-val-length-max="20" id="Telefone" name="Telefone" type="text" />
+                            <span id="spntelerr" class="spanerr"></span>
+                            <button type="button" class="btn btn-info btn-circle ntooltip" title="Adicionar telefone à lista." style="margin-left: 5px;" id="btnAddFone"><i class="glyphicon glyphicon-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <ul id="todo"></ul>
+                        </div>
+                    </div>
+
+
+                    <div class="container">
+                        <div id="msgSucesso" class="alert alert-success col-md-5" style="display:none">
+                            <strong>Successo!</strong> Os dados foram salvos.
+                        </div>
+                        <div id="msgErro" class="alert alert-danger col-md-5" style="display:none">
+                            <strong>Erro!</strong> Não foi possível salvar os dados da empresa.
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control ntooltip", title = "Informe data de nascimento do fornecedor.", type = "date" } })
-                        <span id="spndataerr" class="spanerr"></span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label class="control-label col-md-4">Telefones</label>
-                <div class="col-md-8" style="display: flex;">
-                    <input class="form-control text-box single-line phone ntooltip" title = "Informe um telefone."  data-val="true" data-val-length-max="20" id="Telefone" name="Telefone" type="text" />
-                    <span id="spntelerr" class="spanerr"></span>
-                    <button type="button" class="btn btn-info btn-circle ntooltip" title = "Adicionar telefone à lista." style="margin-left: 5px;" id="btnAddFone"><i class="glyphicon glyphicon-plus"></i></button>
-                </div>
+
             </div>
-            
-            <div class="form-group">
-                <label class="control-label col-md-4"></label>
-                <div class="col-md-8">
-                    <ul id="todo"></ul>
-                </div>
+            <div class="modal-footer">
+                <input type="submit" value="Salvar" class="btn btn-default" onclick="SalvaCreateFornecedor()" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
 
 
-            <div class="container">
-                <div id="msgSucesso" class="alert alert-success col-md-5" style="display:none">
-                    <strong>Successo!</strong> Os dados foram salvos.
-                </div>
-                <div id="msgErro" class="alert alert-danger col-md-5" style="display:none">
-                    <strong>Erro!</strong> Não foi possível salvar os dados da empresa.
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-    <div class="modal-footer">
-        <input type="submit" value="Salvar" class="btn btn-default" onclick="SalvaCreateFornecedor()" />
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        }
     </div>
 </div>
 
