@@ -29,24 +29,21 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Cnpj, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control cnpj" } })
+                            @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control ntooltip cnpj", @title = "Cnpj da Empresa"  } })
                             @Html.ValidationMessageFor(model => model.Cnpj, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.NomeFantasia, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control ntooltip", @title = "Informe o nome da Empresa" } } )
                             @Html.ValidationMessageFor(model => model.NomeFantasia, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.UF, "UF", htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @*
-                                @Html.DropDownList("UF", null, htmlAttributes: new { @class = "form-control" })
-                            *@
-                            @Html.DropDownListFor(model => model.UF, (IEnumerable<SelectListItem>)Model.Estados, "Selecione", htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.UF, (IEnumerable<SelectListItem>)Model.Estados, "Selecione", htmlAttributes: new { @class = "form-control ntooltip", @title = "Selecione o estado da Empresa" })
                             @Html.ValidationMessageFor(model => model.UF, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -64,5 +61,10 @@
 <script>
     $(document).ready(function () {
         $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+
+        $('.ntooltip').tooltipster({
+            theme: 'tooltipster-shadow',
+            plugins: ['follower']
+        });
     });
 </script>

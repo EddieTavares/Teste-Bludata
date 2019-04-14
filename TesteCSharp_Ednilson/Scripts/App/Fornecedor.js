@@ -1,49 +1,53 @@
 ﻿$(document).ready(function () {
-    //$("#btnShowModal").click(function () {
-    //    CarregaPartialCreate();
-    //    $("#modal").modal();
-    //});
-    //
-    //$("input[name$='rdtipo']").click(function () {
-    //    var test = $(this).val();
-    //
-    //    $("#DataNascimento").hide();
-    //    $("#Rg").show();
-    //});
+    $.LimpaPesquisa();
 
-    CarregaPartialIndex();
+    //carrega modal de edicao
+    $(".pesquisar").click(function () {
+        $.CarregaPartialIndex();
+    });
+
+    // Limpa os campos do form pesquisa
+    $(".limpar").click(function () {
+        $.LimpaPesquisa();
+    });
 });
 
-function RecarregaGradeFornecedor(e) {
-    if (e.responseText == "Success") {
-        $('.close').click();  // fecha o modal
-        $('.modal-backdrop').hide(); // fecha o blackdrop
-        // $(".indexcontainer").load("/Empresa/Index");
-        window.location.replace(baseUrl + 'Fornecedor');
-    }
-}
+$.LimpaPesquisa = function () {
+    $("#FiltroNome").val("");
+    $("#FiltroCpfCnpj").val("");
 
-function CarregaPartialIndex() {
+    var d = new Date();
+    var twoDigitMonth = ((d.getMonth().length + 1) === 1) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
 
-    var EmpresaCnpj = document.getElementById("EmpresaCnpj").value;
-    var Nome = document.getElementById("txtFiltroNome").value;
-    var CpfCnpj = document.getElementById("txtFiltroCpfCnpj").value;
-    var DataInicial = document.getElementById("dtpFiltroDataInicial").value;
-    var DataFinal = document.getElementById("dtpFiltroDataFinal").value;
+    var strDate = d.getFullYear() + "-" + twoDigitMonth + "-" + d.getDate();
+    $("#FiltroDataFinal").val(strDate);
 
-    var url = baseUrl + 'Fornecedor/GetPartialIndex';
+    strDate = (d.getFullYear() - 5) + "-" + twoDigitMonth + "-" + d.getDate();
+    $("#FiltroDataInicial").val(strDate);
+
+    $.CarregaPartialIndex();
+};
+
+
+$.CarregaPartialIndex = function () {
+
+    var FiltroNome = document.getElementById("FiltroNome").value;
+    var FiltroCpfCnpj = document.getElementById("FiltroCpfCnpj").value;
+    var FiltroDataInicial = document.getElementById("FiltroDataInicial").value;
+    var FiltroDataFinal = document.getElementById("FiltroDataFinal").value;
+
+    var url = baseUrl + 'Fornecedor/GetLista';
 
     $.get(
         url,
         {
-            EmpresaCnpj: EmpresaCnpj,
-            Nome: Nome,
-            CpfCnpj: CpfCnpj,
-            DataInicial: DataInicial,
-            DataFinal: DataFinal
+            FiltroNome: FiltroNome,
+            FiltroCpfCnpj: FiltroCpfCnpj,
+            FiltroDataInicial: FiltroDataInicial,
+            FiltroDataFinal: FiltroDataFinal
         },
         function (data) {
-            $("#divIndexFornecedor").html(data);
+            $("#divListaFornecedor").html(data);
 
             $('.ntooltip').tooltipster({
                 theme: 'tooltipster-shadow',
@@ -52,11 +56,17 @@ function CarregaPartialIndex() {
 
             $.CarrregaModal();
         });
+};
+
+function RecarregaGradeFornecedor(e) {
+    if (!$('.field-validation-error').length && !$('.validation-summary-errors').length) {
+        $('.close').click();  // fecha o modal
+        $.CarregaPartialIndex();
+    }
 }
 
-
 $.CarrregaModal = function () {
-
+    //carrega modal de edicao
     $(".edit").click(function () {
         var id = JSON.parse($(this).attr("data-id"));
 
@@ -67,36 +77,15 @@ $.CarrregaModal = function () {
         });
     });
 
+    //carrega modal create
     $(".create").click(function () {
         $("#modal").load("/Fornecedor/Create", function () {
             $.validator.unobtrusive.parse("#modal");
             $("#modal").modal();
-
-            // // oculta os campos Rg e Data de nascimento
-            // 
-            // 
-            // // exibe os campos Rg e Data de nascimento quando pessoa física
-            // $(".showrg").change(function () { 
-            //     $(".divrg").show();
-            //     $("#Cpf_Cnpj").val("");
-            //     $("#Cpf_Cnpj").addClass("cpf");
-            //     $("#Cpf_Cnpj").removeClass("cnpj");
-            //     $('.cpf').mask('000.000.000-00', { reverse: true });
-            // });
-            // 
-            // // exibe os campos Rg e Data de nascimento quando pessoa Jurídica
-            // $(".hiderg").change(function () { 
-            //     $(".divrg").hide();
-            //     $("#Cpf_Cnpj").val("");
-            //     $("#Cpf_Cnpj").addClass("cnpj");
-            //     $("#Cpf_Cnpj").removeClass("cpf");
-            //     $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
-            // });
-
-            // $.AtualizaFone();
         });
     });
 
+    //carrega modal details
     $(".details").click(function () {
         var id = JSON.parse($(this).attr("data-id"));
         $("#modal").load("/Fornecedor/Details", { EmpresaCnpj: id[0], FornecedorCpfCnpj: id[1] }, function () {
@@ -104,12 +93,9 @@ $.CarrregaModal = function () {
         });
     });
 
+    //carrega modal delete
     $(".delete").click(function () {
         var id = JSON.parse($(this).attr("data-id"));
-
-        debugger;
-
-
         $("#modal").load("/Fornecedor/Delete", { EmpresaCnpj: id[0], FornecedorCpfCnpj: id[1] }, function () {
             $("#modal").modal();
         });
@@ -117,6 +103,7 @@ $.CarrregaModal = function () {
 };
 
 $.AtualizaFone = function () {
+    // adiciona telefone aa lista
     $('#btnAddFone').click(function () {
         if ($("input[name=Telefone]").val() != '') {
             var ind = $('#Telefones_Count').val();
@@ -165,13 +152,3 @@ $.AplicaMascaras = function () {
     $('.cpf').mask('000.000.000-00', { reverse: true });
     $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
 };
-
-function show() {
-    document.getElementById('divfis').style.display = 'block';
-    document.getElementById("Cpf_Cnpj").value = '';
-}
-
-function hide() {
-    document.getElementById('divfis').style.display = 'none';
-    document.getElementById("Cpf_Cnpj").value = '';
-}

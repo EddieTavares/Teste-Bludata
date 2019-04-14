@@ -29,11 +29,18 @@
     });
 });
 
-$.RecarregaGrade = function (e) {
-    if (e.responseText == "Success") {
-        $('.close').click();  // fecha o modal
-        $('.modal-backdrop').hide(); // fecha o blackdrop
 
+function RecarregaGrade(e) {
+    if (!$('.field-validation-error').length && !$('.validation-summary-errors').length ) {
+        $('.close').click();  // fecha o modal
         window.location.replace(baseUrl + 'Empresa');
     }
-};
+
+    // if (e.responseText == "Success") {
+    //     $('#modal').modal('toggle'); //or  $('#IDModal').modal('hide');
+    //     $('.modal-backdrop').hide(); // fecha o blackdrop
+    //     window.location.replace(baseUrl + 'Empresa');
+    // }
+}
+
+

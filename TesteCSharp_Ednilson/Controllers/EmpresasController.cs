@@ -75,7 +75,7 @@ namespace TesteCSharp_Ednilson.Controllers
 
                 db.Empresa.Add(empresa);
                 db.SaveChanges();
-                return Content("Success");
+                // return Content("Success");
             }
 
             _empresa.Estados = new SelectList(Utils.Utils.DtbEstados().AsDataView(), "Uf", "Estado");
@@ -107,7 +107,7 @@ namespace TesteCSharp_Ednilson.Controllers
 
                 db.Entry((Empresa)empresa).State = EntityState.Modified;
                 db.SaveChanges();
-                return Content("Success");
+                // return Content("Success");
             }
 
             empresa.Estados = new SelectList(Utils.Utils.DtbEstados().AsDataView(), "Uf", "Estado", empresa.UF);
@@ -151,9 +151,11 @@ namespace TesteCSharp_Ednilson.Controllers
                     ModelState.AddModelError("", e.Message);
 
                 Empresa empresa = db.Empresa.Find(Cnpj);
+                empresa.UF = Utils.Utils.GetEstado(empresa.UF);
                 return View("Delete", empresa);
             }
-            return Content("Success");
+            // return Content("Success");
+            return View("Delete", new Empresa() { Cnpj= "00000000000000" });
         }
 
         protected override void Dispose(bool disposing)

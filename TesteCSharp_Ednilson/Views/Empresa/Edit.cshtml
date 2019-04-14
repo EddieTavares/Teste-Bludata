@@ -15,7 +15,10 @@
             }))
         {
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal" title = "Fechar" >
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>                
+                </button>
                 <h4 class="modal-title">Atualizar Empresa</h4>
             </div>
             @Html.AntiForgeryToken()
@@ -27,7 +30,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Cnpj, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.Cnpj, null, new { htmlAttributes = new { @class = "form-control cnpj", @Input = "Disabled", @readonly = "readonly" }})
+                            @Html.EditorFor(model => model.Cnpj, null, new { htmlAttributes = new { @class = "form-control ntooltip cnpj", @Input = "Disabled", @readonly = "readonly", @title = "Cnpj da Empresa" } })
                             @Html.ValidationMessageFor(model => model.Cnpj, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -35,7 +38,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.NomeFantasia, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.NomeFantasia, new { htmlAttributes = new { @class = "form-control ntooltip", @title = "Informe o nome da Empresa" } })
                             @Html.ValidationMessageFor(model => model.NomeFantasia, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -43,7 +46,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.UF, "UF", htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-8">
-                            @Html.DropDownListFor(model => model.UF, (IEnumerable<SelectListItem>)Model.Estados, "Selecione", htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.UF, (IEnumerable<SelectListItem>)Model.Estados, "Selecione", htmlAttributes: new { @class = "form-control ntooltip", @title = "Selecione o estado da Empresa" })
                             @Html.ValidationMessageFor(model => model.UF, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -61,5 +64,10 @@
 <script>
     $(document).ready(function () {
         $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+
+        $('.ntooltip').tooltipster({
+            theme: 'tooltipster-shadow',
+            plugins: ['follower']
+        });
     });
 </script>

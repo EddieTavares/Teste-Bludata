@@ -24,15 +24,22 @@ textarea {
 }
 
 .margem-lr-10 {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .margem-lrtp-20 {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 45px;
+    margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.margem-lrtp-10 {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #todo {
@@ -43,3 +50,5 @@ textarea {
 a.close {
     float: initial;
 }
+
+

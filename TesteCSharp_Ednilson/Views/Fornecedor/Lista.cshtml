@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TesteCSharp_Ednilson.Models.Fornecedor>
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cpf_Cnpj)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo_Pessoa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataCadastro)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @if (item.Tipo_Pessoa == "F")
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf_Cnpj).ToString().Insert(3, ".").Insert(7, ".").Insert(11, "-")
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf_Cnpj).ToString().Insert(2, ".").Insert(6, ".").Insert(10, "/").Insert(15, "-")
+                </td>
+            }
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            @if (item.Tipo_Pessoa == "F")
+            {
+                <td>Física</td>
+            }
+            else
+            {
+                <td>Jurídica</td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCadastro)
+            </td>
+            <td>
+                <div style="float: right;">
+
+                    <button class="btn btn-primary btn-mini ntooltip edit" title="Editar dados fornecedor" data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+
+                    <button class="btn btn-warning btn-mini ntooltip details" title="Detalhes fornecedor" data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </button>
+
+                    <button class="btn btn-danger btn-mini ntooltip delete" title="Exclui fornecedor" data-id='["@item.Empresa_Cnpj", "@item.Cpf_Cnpj"]' type="button">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryajax")
+
+    <script src="~/Scripts/App/Fornecedor.js"></script>
+}

@@ -21,15 +21,14 @@
                 @Html.ActionLink("Teste Bludata", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
 
 
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cadastros <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">@Html.ActionLink("Empresa", "Edit", "Empresa")</a></li>
+                            <li><a href="#">@Html.ActionLink("Empresa", "Index", "Empresa")</a></li>
                             <li><a href="#">@Html.ActionLink("Fornecedores", "Index", "Fornecedor")</a></li>
                         </ul>
                     </li>
@@ -56,6 +55,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     @Scripts.Render("~/bundles/jquerymask")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/tooltipster")
 
     <script>

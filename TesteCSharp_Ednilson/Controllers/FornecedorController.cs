@@ -19,15 +19,37 @@ namespace TesteCSharp_Ednilson.Controllers
         // GET: Fornecedor
         public ActionResult Index()
         {
-            // try
-            // {
-            //     ViewBag.EmpresaCnpj = db.Empresa.FirstOrDefault().Cnpj;
-            // }
-            // catch (Exception)
-            // {
-            //     return Json(new { Rc = 9, Message = "Erro" });
-            // }
             return View();
+        }
+
+        // GET: Fornecedor/GetLista
+        public ActionResult GetLista(
+            string FiltroNome,
+            string FiltroCpfCnpj,
+            string FiltroDataInicial,
+            string FiltroDataFinal)
+        {
+            var fornecedor = db.Fornecedor.Include(f => f.Empresa);
+
+            if (!string.IsNullOrWhiteSpace(FiltroNome))
+                fornecedor = fornecedor.Where(x => x.Nome.Contains(FiltroNome));
+
+            if (!string.IsNullOrWhiteSpace(FiltroCpfCnpj))
+                fornecedor = fornecedor.Where(x => x.Cpf_Cnpj.Contains(FiltroCpfCnpj));
+
+            if (!string.IsNullOrWhiteSpace(FiltroDataInicial)) {
+                var _FiltroDataInicial = Convert.ToDateTime(FiltroDataInicial).AddSeconds(1);
+                fornecedor = fornecedor.Where(x => x.DataCadastro >= _FiltroDataInicial);
+            }
+
+            if (!string.IsNullOrWhiteSpace(FiltroDataFinal)) {
+                var _FiltroDataFinal = Convert.ToDateTime(FiltroDataFinal).AddDays(1).AddSeconds(-1);
+                fornecedor = fornecedor.Where(x => x.DataCadastro <= _FiltroDataFinal);
+            }
+
+            var _fornecedores = fornecedor.ToList();
+            
+            return View("Lista", _fornecedores);
         }
 
         // GET: Fornecedor
@@ -66,14 +88,6 @@ namespace TesteCSharp_Ednilson.Controllers
             }
             var _fornecedor = fornecedor.ToList();
 
-            // foreach (var item in _fornecedor)
-            // {
-            //     if (item.Tipo_Pessoa == "F")
-            //         item.Cpf_Cnpj = Convert.ToUInt64(item.Cpf_Cnpj).ToString(@"000\.000\.000\-00");
-            //     else
-            //         item.Cpf_Cnpj = Convert.ToUInt64(item.Cpf_Cnpj).ToString(@"00\.000\.000\/0000\-00");
-            // }
-
             return View("PartialIndex", _fornecedor);
         }
 
@@ -94,6 +108,7 @@ namespace TesteCSharp_Ednilson.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Validacoes
                 if (fornecedor.Tipo_Pessoa == "F" && !Utils.Utils.IsCpf(fornecedor.Cpf_Cnpj))
                     ModelState.AddModelError("Cpf_Cnpj", "Cpf inválido.");
 
@@ -107,12 +122,16 @@ namespace TesteCSharp_Ednilson.Controllers
                 {
                     var empresa = db.Empresa.Where(x => x.Cnpj == fornecedor.Empresa_Cnpj).FirstOrDefault();
 
+                    // validacao de idade para empresas do Parana
                     if (empresa != null && empresa.UF == "PR")
                     {
-                        TimeSpan date = DateTime.Now - Convert.ToDateTime(fornecedor.DataNascimento);
-                        double totalAnos = date.Days / 365;
+                        var hoje = DateTime.Now;
 
-                        if (totalAnos < 18)
+                        var idade = hoje.Year - fornecedor.DataNascimento.Year;
+                        if (fornecedor.DataNascimento > hoje.AddYears(-idade))
+                            idade--;
+
+                        if (idade < 18)
                             ModelState.AddModelError("DataNascimento", "Não é permitido fornecedor menor de idade no estado do Paraná.");
                     }
                 }
@@ -151,14 +170,13 @@ namespace TesteCSharp_Ednilson.Controllers
                 try
                 {
                     foreach (var item in fornecedor.Telefones)
-                    {
                         db.Telefone.Add(
                             new Telefone()
                             {
                                 Fornecedor_Cpf_Cnpj = fornecedor.Cpf_Cnpj,
                                 Numero = item
                             });
-                    }
+
                     db.SaveChanges();
                 }
                 catch (Exception e)
@@ -169,7 +187,7 @@ namespace TesteCSharp_Ednilson.Controllers
                     fornecedor.ListEmpresas = new SelectList(db.Empresa, "Cnpj", "NomeFantasia");
                     return View("Create", fornecedor);
                 }
-                return Content("Success");
+                // return Content("Success");
             }
 
             fornecedor.ListEmpresas = new SelectList(db.Empresa, "Cnpj", "NomeFantasia");
@@ -218,11 +236,15 @@ namespace TesteCSharp_Ednilson.Controllers
 
                     if (empresa != null && empresa.UF == "PR")
                     {
-                        TimeSpan date = DateTime.Now - Convert.ToDateTime(fornecedorViewModel.DataNascimento);
-                        double totalAnos = date.Days / 365;
 
-                        if (totalAnos < 18)
-                            ModelState.AddModelError("DataNascimento", "Não é permitido fornecedor menor de idade no estado do Paraná.");
+                        var hoje = DateTime.Now;
+
+                        var idade = hoje.Year - fornecedorViewModel.DataNascimento.Year;
+                        if (fornecedorViewModel.DataNascimento > hoje.AddYears(-idade))
+                            idade--;
+
+                        if (idade < 18)
+                            ModelState.AddModelError("DataNascimento", "Não é permitido fornecedor menor de idade" + Environment.NewLine + "no estado do Paraná.");
                     }
                 }
             }
@@ -258,7 +280,7 @@ namespace TesteCSharp_Ednilson.Controllers
                                 db.Telefone.Add(new Telefone() { Fornecedor_Cpf_Cnpj = fornecedorViewModel.Cpf_Cnpj, Numero = item });
                         // db.SaveChanges();
                     }
-                    _fornecedor.DataCadastro = fornecedorViewModel.DataCadastro;
+
                     _fornecedor.DataNascimento = fornecedorViewModel.DataNascimento;
                     _fornecedor.Nome = fornecedorViewModel.Nome;
                     _fornecedor.Rg = fornecedorViewModel.Rg;
@@ -275,7 +297,7 @@ namespace TesteCSharp_Ednilson.Controllers
                     fornecedorViewModel.ListEmpresas = new SelectList(db.Empresa, "Cnpj", "NomeFantasia");
                     return View("Edit", fornecedorViewModel);
                 }
-                return Content("Success");
+                // return Content("Success");
             }
 
             fornecedorViewModel.ListEmpresas = new SelectList(db.Empresa, "Cnpj", "NomeFantasia");
@@ -322,18 +344,22 @@ namespace TesteCSharp_Ednilson.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string Empresa_Cnpj, string Cpf_Cnpj)
         {
-            // FornecedorCpfCnpj = Convert.ToInt64(Cpf_Cnpj).ToString();
+            var fornecedor =
+                db.Fornecedor
+                .Include(f => f.Telefone)
+                .Where(x => x.Cpf_Cnpj.Contains(Cpf_Cnpj) && x.Empresa_Cnpj == Empresa_Cnpj).FirstOrDefault();
+
             try
             {
                 var telefones = db.Telefone.Where(x => x.Fornecedor_Cpf_Cnpj == Cpf_Cnpj).ToList();
                 db.Telefone.RemoveRange(telefones);
                 // db.SaveChanges();
 
-                var fornecedor =
-                    db.Fornecedor
-                    .Where(x => x.Cpf_Cnpj == Cpf_Cnpj && x.Empresa_Cnpj == Empresa_Cnpj);
+                // var fornecedor =
+                //     db.Fornecedor
+                //     .Where(x => x.Cpf_Cnpj == Cpf_Cnpj && x.Empresa_Cnpj == Empresa_Cnpj);
 
-                db.Fornecedor.Remove(fornecedor.FirstOrDefault());
+                db.Fornecedor.Remove(fornecedor);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -344,15 +370,11 @@ namespace TesteCSharp_Ednilson.Controllers
                 else
                     ModelState.AddModelError("", e.Message);
 
-                var fornecedor =
-                    db.Fornecedor
-                    .Include(f => f.Telefone)
-                    .Where(x => x.Cpf_Cnpj.Contains(Cpf_Cnpj) && x.Empresa_Cnpj == Empresa_Cnpj).FirstOrDefault();
-
                 return View("Delete", fornecedor);
             }
 
-            return Content("Success");
+            // return Content("Success");
+            return View("Delete", fornecedor);
         }
 
         protected override void Dispose(bool disposing)

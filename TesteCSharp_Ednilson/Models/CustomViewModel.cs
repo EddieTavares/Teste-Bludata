@@ -8,7 +8,6 @@ using static TesteCSharp_Ednilson.App_Start.CustomValidators;
 
 namespace TesteCSharp_Ednilson.Models
 {
-
     public class FornecedorViewModel
     {
         [Key]
@@ -111,5 +110,29 @@ namespace TesteCSharp_Ednilson.Models
 
             throw new NotImplementedException();
         }
+    }
+
+    public class EmpresaIndexViewModel
+    {
+        [StringLength(50)]
+        [Display(Name = "Nome")]
+        public string FiltroNome { get; set; }
+
+        [StringLength(18)]
+        [Display(Name = "Cpf/Cnpj")]
+        public string FiltroCpfCnpj { get; set; }
+
+
+        [Display(Name = "Data inicial")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FiltroDataInicial { get; set; }
+
+        [Display(Name = "Data final")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FiltroDataFinal { get; set; }
+
+        public List<Fornecedor> Fornecedores { get; set; }
     }
 }

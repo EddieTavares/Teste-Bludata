@@ -39,8 +39,8 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Tipo_Pessoa, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: end;" })
                         <div class="col-md-8">
-                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "F", new { disabled = "disabled" }) Física <br>
-                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "J", new { disabled = "disabled" }) Jurídica
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "F", new { disabled = "disabled ntooltip" }) Física <br>
+                            @Html.RadioButtonFor(model => model.Tipo_Pessoa, "J", new { disabled = "disabled ntooltip" }) Jurídica
                             @Html.ValidationMessageFor(model => model.Tipo_Pessoa, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -132,5 +132,10 @@
         $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
         $('.phone').mask('(00) 00009-0000');
         $('.rg').mask('000.000.000-0');
+
+        $('.ntooltip').tooltipster({
+            theme: 'tooltipster-shadow',
+            plugins: ['follower']
+        });
     });
 </script>
