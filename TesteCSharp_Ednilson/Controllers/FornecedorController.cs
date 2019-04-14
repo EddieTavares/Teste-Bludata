@@ -34,6 +34,8 @@ namespace TesteCSharp_Ednilson.Controllers
             if (!string.IsNullOrWhiteSpace(FiltroNome))
                 fornecedor = fornecedor.Where(x => x.Nome.Contains(FiltroNome));
 
+            FiltroCpfCnpj = Regex.Replace(FiltroCpfCnpj, "[^0-9,]", "");
+
             if (!string.IsNullOrWhiteSpace(FiltroCpfCnpj))
                 fornecedor = fornecedor.Where(x => x.Cpf_Cnpj.Contains(FiltroCpfCnpj));
 
@@ -50,45 +52,6 @@ namespace TesteCSharp_Ednilson.Controllers
             var _fornecedores = fornecedor.ToList();
             
             return View("Lista", _fornecedores);
-        }
-
-        // GET: Fornecedor
-        public ActionResult GetPartialIndex(
-            string EmpresaCnpj,
-            string Nome,
-            string CpfCnpj,
-            string DataInicial,
-            string DataFinal)
-        {
-            var fornecedor = db.Fornecedor.Include(f => f.Empresa);
-
-            if (!string.IsNullOrWhiteSpace(EmpresaCnpj))
-                fornecedor = fornecedor.Where(x => x.Empresa_Cnpj == EmpresaCnpj);
-            
-            if (!string.IsNullOrWhiteSpace(Nome))
-                fornecedor = fornecedor.Where(x => x.Nome.Contains(Nome));
-
-            if (!string.IsNullOrWhiteSpace(CpfCnpj))
-                fornecedor = fornecedor.Where(x => x.Cpf_Cnpj.Contains(CpfCnpj));
-
-            var _DataInicial = new DateTime();
-
-            if (DataInicial != string.Empty)
-            {
-                _DataInicial = Convert.ToDateTime(DataInicial);
-                fornecedor = fornecedor.Where(x => x.DataCadastro >= _DataInicial);
-            }
-
-            var _DataFinal = new DateTime();
-
-            if (DataFinal != string.Empty)
-            {
-                _DataFinal = Convert.ToDateTime(DataFinal).AddDays(1).AddMinutes(-1);
-                fornecedor = fornecedor.Where(x => x.DataCadastro <= _DataFinal);
-            }
-            var _fornecedor = fornecedor.ToList();
-
-            return View("PartialIndex", _fornecedor);
         }
 
         // GET: Fornecedor/Create

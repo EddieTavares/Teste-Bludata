@@ -265,7 +265,6 @@
     <Content Include="Views\Fornecedor\Delete.cshtml" />
     <Content Include="Views\Fornecedor\Details.cshtml" />
     <Content Include="Views\Fornecedor\Edit.cshtml" />
-    <Content Include="Views\Fornecedor\Indexxxx.cshtml" />
     <Content Include="Views\Fornecedor\Lista.cshtml" />
     <Content Include="Views\Fornecedor\Create.cshtml" />
     <Content Include="Views\Empresa\Create.cshtml" />

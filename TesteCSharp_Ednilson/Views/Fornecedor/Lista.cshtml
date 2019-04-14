@@ -16,6 +16,9 @@
             @Html.DisplayNameFor(model => model.Tipo_Pessoa)
         </th>
         <th>
+            Cliente
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.DataCadastro)
         </th>
         <th></th>
@@ -49,6 +52,9 @@
             {
                 <td>Jurídica</td>
             }
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa.NomeFantasia)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DataCadastro)
             </td>
