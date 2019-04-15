@@ -30,7 +30,7 @@
 });
 
 
-function RecarregaGrade(e) {
+function CarregaLista(e) {
     if (!$('.field-validation-error').length && !$('.validation-summary-errors').length ) {
         $('.close').click();  // fecha o modal
 

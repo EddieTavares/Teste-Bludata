@@ -3,7 +3,7 @@
 
     //carrega modal de edicao
     $(".pesquisar").click(function () {
-        $.CarregaPartialIndex();
+        $.CarregaLista();
     });
 
     // Limpa os campos do form pesquisa
@@ -25,11 +25,11 @@ $.LimpaPesquisa = function () {
     strDate = (d.getFullYear() - 5) + "-" + twoDigitMonth + "-" + d.getDate();
     $("#FiltroDataInicial").val(strDate);
 
-    $.CarregaPartialIndex();
+    $.CarregaLista();
 };
 
 
-$.CarregaPartialIndex = function () {
+$.CarregaLista = function () {
 
     var FiltroNome = document.getElementById("FiltroNome").value;
     var FiltroCpfCnpj = document.getElementById("FiltroCpfCnpj").value;
@@ -58,16 +58,13 @@ $.CarregaPartialIndex = function () {
         });
 };
 
-function RecarregaGradeFornecedor(e) {
+function CarregaLista(e) {
     if (!$('.field-validation-error').length && !$('.validation-summary-errors').length) {
-
-        debugger;
-
         $('.close').click();  // fecha o modal
         
         setTimeout(
             function () {
-                $.CarregaPartialIndex();
+                $.CarregaLista();
             }, 300);
     }
 }

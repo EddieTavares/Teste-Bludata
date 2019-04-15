@@ -316,21 +316,13 @@ namespace TesteCSharp_Ednilson.Controllers
             {
                 var telefones = db.Telefone.Where(x => x.Fornecedor_Cpf_Cnpj == Cpf_Cnpj).ToList();
                 db.Telefone.RemoveRange(telefones);
-                // db.SaveChanges();
-
-                // var fornecedor =
-                //     db.Fornecedor
-                //     .Where(x => x.Cpf_Cnpj == Cpf_Cnpj && x.Empresa_Cnpj == Empresa_Cnpj);
-
                 db.Fornecedor.Remove(fornecedor);
                 db.SaveChanges();
             }
             catch (Exception e)
             {
                 var innerException = e.InnerException.InnerException as SqlException;
-                if (innerException != null && (innerException.Number == 547))
-                    ModelState.AddModelError("", "A empresa possue fornecedores cadastrados.");
-                else
+                if (innerException != null)
                     ModelState.AddModelError("", e.Message);
 
                 return View("Delete", fornecedor);
