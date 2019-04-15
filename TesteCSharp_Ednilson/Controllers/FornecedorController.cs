@@ -277,11 +277,6 @@ namespace TesteCSharp_Ednilson.Controllers
                 .Include(f => f.Telefone)
                 .Where(x => x.Cpf_Cnpj.Contains(FornecedorCpfCnpj) && x.Empresa_Cnpj == EmpresaCnpj).FirstOrDefault();
 
-            if (fornecedor.Tipo_Pessoa == "F")
-                fornecedor.Cpf_Cnpj = Convert.ToUInt64(fornecedor.Cpf_Cnpj).ToString(@"000\.000\.000\-00");
-            else
-                fornecedor.Cpf_Cnpj = Convert.ToUInt64(fornecedor.Cpf_Cnpj).ToString(@"00\.000\.000\/0000\-00");
-
             if (fornecedor == null)
                 return HttpNotFound();
 

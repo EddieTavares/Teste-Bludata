@@ -18,9 +18,18 @@
                             @Html.DisplayNameFor(model => model.Cpf_Cnpj)
                         </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Cpf_Cnpj)
-                        </dd>
+                        @if (Model.Tipo_Pessoa == "F")
+                        {
+                            <dd>
+                                @Html.DisplayFor(model => model.Cpf_Cnpj).ToString().Insert(3, ".").Insert(7, ".").Insert(11, "-")
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                @Html.DisplayFor(model => model.Cpf_Cnpj).ToString().Insert(2, ".").Insert(6, ".").Insert(10, "/").Insert(15, "-")
+                            </dd>
+                        }
 
                         <dt>
                             @Html.DisplayNameFor(model => model.Nome)
