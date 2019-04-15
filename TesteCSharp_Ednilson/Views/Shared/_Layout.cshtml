@@ -29,7 +29,18 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cadastros <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">@Html.ActionLink("Empresa", "Index", "Empresa")</a></li>
-                            <li><a href="#">@Html.ActionLink("Fornecedores", "Index", "Fornecedor")</a></li>
+
+                            @if (ViewBag.EmpresaCnpj != string.Empty)
+                            {
+                                <li><a href="#">@Html.ActionLink("Fornecedores", "Index", "Fornecedor")</a></li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a></a>
+                                    <a>Fornecedores</a>
+                                </li>
+                            }
                         </ul>
                     </li>
                 </ul>

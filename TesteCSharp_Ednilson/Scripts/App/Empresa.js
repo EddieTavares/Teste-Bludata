@@ -33,14 +33,14 @@
 function RecarregaGrade(e) {
     if (!$('.field-validation-error').length && !$('.validation-summary-errors').length ) {
         $('.close').click();  // fecha o modal
-        window.location.replace(baseUrl + 'Empresa');
+
+        setTimeout(
+            function () {
+                window.location.replace(baseUrl + 'Empresa');
+            }, 300);
+
     }
 
-    // if (e.responseText == "Success") {
-    //     $('#modal').modal('toggle'); //or  $('#IDModal').modal('hide');
-    //     $('.modal-backdrop').hide(); // fecha o blackdrop
-    //     window.location.replace(baseUrl + 'Empresa');
-    // }
 }
 
 

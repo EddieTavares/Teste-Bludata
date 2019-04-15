@@ -60,8 +60,15 @@ $.CarregaPartialIndex = function () {
 
 function RecarregaGradeFornecedor(e) {
     if (!$('.field-validation-error').length && !$('.validation-summary-errors').length) {
+
+        debugger;
+
         $('.close').click();  // fecha o modal
-        $.CarregaPartialIndex();
+        
+        setTimeout(
+            function () {
+                $.CarregaPartialIndex();
+            }, 300);
     }
 }
 
