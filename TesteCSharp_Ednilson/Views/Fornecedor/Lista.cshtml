@@ -79,9 +79,14 @@
 
 </table>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryajax")
+<script>
+    $(document).ready(function () {
 
-    <script src="~/Scripts/App/Fornecedor.js"></script>
-}
+        $.CarrregaModal();
+
+        $('.ntooltip').tooltipster({
+            theme: 'tooltipster-shadow',
+            plugins: ['follower']
+        });
+    });
+</script>

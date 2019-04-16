@@ -24,34 +24,39 @@ namespace TesteCSharp_Ednilson.Controllers
 
         // GET: Fornecedor/GetLista
         public ActionResult GetLista(
-            string FiltroNome,
-            string FiltroCpfCnpj,
-            string FiltroDataInicial,
-            string FiltroDataFinal)
+            // string FiltroNome,
+            // string FiltroCpfCnpj,
+            // string FiltroDataInicial,
+            // string FiltroDataFinal
+            
+            FornecedorIndexViewModel _fornecedorIndexViewModel
+            )
         {
             var fornecedor = db.Fornecedor.Include(f => f.Empresa);
 
-            if (!string.IsNullOrWhiteSpace(FiltroNome))
-                fornecedor = fornecedor.Where(x => x.Nome.Contains(FiltroNome));
+            if (!string.IsNullOrWhiteSpace(_fornecedorIndexViewModel.FiltroNome))
+                fornecedor = fornecedor.Where(x => x.Nome.Contains(_fornecedorIndexViewModel.FiltroNome));
 
-            FiltroCpfCnpj = Regex.Replace(FiltroCpfCnpj, "[^0-9,]", "");
 
-            if (!string.IsNullOrWhiteSpace(FiltroCpfCnpj))
-                fornecedor = fornecedor.Where(x => x.Cpf_Cnpj.Contains(FiltroCpfCnpj));
+            if (!string.IsNullOrWhiteSpace(_fornecedorIndexViewModel.FiltroCpfCnpj))
+            {
+                _fornecedorIndexViewModel.FiltroCpfCnpj = Regex.Replace(_fornecedorIndexViewModel.FiltroCpfCnpj, "[^0-9,]", "");
+                fornecedor = fornecedor.Where(x => x.Cpf_Cnpj.Contains(_fornecedorIndexViewModel.FiltroCpfCnpj));
+            }
 
-            if (!string.IsNullOrWhiteSpace(FiltroDataInicial)) {
-                var _FiltroDataInicial = Convert.ToDateTime(FiltroDataInicial).AddSeconds(1);
+            if (_fornecedorIndexViewModel.FiltroDataInicial != null) {
+                var _FiltroDataInicial = _fornecedorIndexViewModel.FiltroDataInicial.AddSeconds(1);
                 fornecedor = fornecedor.Where(x => x.DataCadastro >= _FiltroDataInicial);
             }
 
-            if (!string.IsNullOrWhiteSpace(FiltroDataFinal)) {
-                var _FiltroDataFinal = Convert.ToDateTime(FiltroDataFinal).AddDays(1).AddSeconds(-1);
+            if (_fornecedorIndexViewModel.FiltroDataFinal != null) {
+                var _FiltroDataFinal = _fornecedorIndexViewModel.FiltroDataFinal.AddDays(1).AddSeconds(-1);
                 fornecedor = fornecedor.Where(x => x.DataCadastro <= _FiltroDataFinal);
             }
 
             var _fornecedores = fornecedor.ToList();
             
-            return View("Lista", _fornecedores);
+            return PartialView("Lista", _fornecedores);
         }
 
         // GET: Fornecedor/Create

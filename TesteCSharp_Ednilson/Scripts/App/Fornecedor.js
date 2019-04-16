@@ -1,14 +1,11 @@
 ﻿$(document).ready(function () {
     $.LimpaPesquisa();
-
-    //carrega modal de edicao
-    $(".pesquisar").click(function () {
-        $.CarregaLista();
-    });
+    $("#formFornecedor").submit();
 
     // Limpa os campos do form pesquisa
     $(".limpar").click(function () {
         $.LimpaPesquisa();
+        $("#formFornecedor").submit();
     });
 });
 
@@ -24,47 +21,15 @@ $.LimpaPesquisa = function () {
 
     strDate = (d.getFullYear() - 5) + "-" + twoDigitMonth + "-" + d.getDate();
     $("#FiltroDataInicial").val(strDate);
-
-    $.CarregaLista();
 };
 
-
-$.CarregaLista = function () {
-
-    var FiltroNome = document.getElementById("FiltroNome").value;
-    var FiltroCpfCnpj = document.getElementById("FiltroCpfCnpj").value;
-    var FiltroDataInicial = document.getElementById("FiltroDataInicial").value;
-    var FiltroDataFinal = document.getElementById("FiltroDataFinal").value;
-
-    var url = baseUrl + 'Fornecedor/GetLista';
-
-    $.get(
-        url,
-        {
-            FiltroNome: FiltroNome,
-            FiltroCpfCnpj: FiltroCpfCnpj,
-            FiltroDataInicial: FiltroDataInicial,
-            FiltroDataFinal: FiltroDataFinal
-        },
-        function (data) {
-            $("#divListaFornecedor").html(data);
-
-            $('.ntooltip').tooltipster({
-                theme: 'tooltipster-shadow',
-                plugins: ['follower']
-            });
-
-            $.CarrregaModal();
-        });
-};
-
-function CarregaLista(e) {
+function CarregaListaModal(e) {
     if (!$('.field-validation-error').length && !$('.validation-summary-errors').length) {
         $('.close').click();  // fecha o modal
         
         setTimeout(
             function () {
-                $.CarregaLista();
+                $("#formFornecedor").submit();
             }, 300);
     }
 }
@@ -148,10 +113,7 @@ $.AtualizaFone = function () {
 
 $.AplicaMascaras = function () {
     $('.rg').mask('000.000.000-0');
-    $('.money').mask('000.000.000.000.000,00', { reverse: true });
     $('.date').mask('00/00/0000');
-    $('.time').mask('00:00:00');
-    $('.cep').mask('00000-000');
     $('.phone').mask('(00) 00009-0000');
     $('.cpf').mask('000.000.000-00', { reverse: true });
     $('.cnpj').mask('00.000.000/0000-00', { reverse: true });

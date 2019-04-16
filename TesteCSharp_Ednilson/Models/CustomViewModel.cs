@@ -112,7 +112,7 @@ namespace TesteCSharp_Ednilson.Models
         }
     }
 
-    public class EmpresaIndexViewModel
+    public class FornecedorIndexViewModel
     {
         [StringLength(50)]
         [Display(Name = "Nome")]
